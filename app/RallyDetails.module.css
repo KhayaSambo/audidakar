@@ -1,0 +1,26 @@
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 5vw;
+  
+    overflow: hidden;
+  }
+  
+  .body{
+    font-size: 5vw;
+  }
+  
+  .lineMask p{
+    font-family: AudiType;
+    margin: 20px;
+    font-weight: 700;
+  }
+  
+  .lineMask{
+
+    overflow: hidden;
+
+}  
