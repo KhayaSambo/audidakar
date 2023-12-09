@@ -2,31 +2,39 @@
 import { useEffect , useRef , MutableRefObject  } from "react";
 
 const Header = () => {
-   
-  const container = useRef(null);
-  const stickyMask = useRef(null);
+    const container : MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
+    const stickyMask : MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement>(null);
 
-  const initialMaskSize = .8;
-  const targetMaskSize = 30;
-  const easing = 0.15;
-  let easedScrollProgress = 0;
+    const initialMaskSize : number = 0.8;
+    const targetMaskSize : number = 10;
+    const easing : number = 0.15;
+    let easedScrollProgress : number = 10;
 
-  useEffect( () => {
-    requestAnimationFrame(animate)
-  }, [])
+    useEffect(() : void => {
+      requestAnimationFrame(animate);
+    }, []);
 
-  const animate = () => {
-    const maskSizeProgress = targetMaskSize * getScrollProgress();
-    stickyMask.current.style.webkitMaskSize = (initialMaskSize + maskSizeProgress) * 100 + "%";
-    requestAnimationFrame(animate)
-  }
+    const animate = () : void => {
+      const maskSizeProgress : number = targetMaskSize * getScrollProgress();
+      const maskOpacity : number = 1 - maskSizeProgress / targetMaskSize;
+      if (stickyMask.current !== null) {
+        stickyMask.current.style.maskSize = (initialMaskSize + maskSizeProgress) * 100 + "%";
+        stickyMask.current.style.opacity = maskOpacity.toString();
+      }
 
-  const getScrollProgress = () => {
-    const scrollProgress = stickyMask.current.offsetTop / (container.current.getBoundingClientRect().height - window.innerHeight)
-    const delta = scrollProgress - easedScrollProgress;
-    easedScrollProgress += delta * easing;
-    return easedScrollProgress
-  }
+      requestAnimationFrame(animate);
+    };
+
+    const getScrollProgress = () : number => {
+      if (stickyMask.current !== null && container.current !== null) {
+        const scrollProgress : number = stickyMask.current.offsetTop  / (container.current.getBoundingClientRect().height - window.innerHeight);
+        const delta : number = scrollProgress - easedScrollProgress;
+        easedScrollProgress += delta * easing;
+        return easedScrollProgress;
+      }
+
+      return 0;
+    }
 
     return (
       <>
